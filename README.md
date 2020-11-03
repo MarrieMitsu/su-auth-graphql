@@ -9,6 +9,9 @@ Trying to apply my knowledge of Authentication and GraphQL in this simple applic
 ## Usage
 
 ```bash
+#Install dependencies
+yarn
+
 #Development
 yarn watch
 
