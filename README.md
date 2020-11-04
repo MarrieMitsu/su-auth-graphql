@@ -9,15 +9,26 @@ Trying to apply my knowledge of Authentication and GraphQL in this simple applic
 ## Usage
 
 ```bash
-#Install dependencies
+# Install dependencies
 yarn
 
-#Development
+# Database migration
+# Setup typeorm config file 'ormconfig.[format]' 
+
+# Without synchronize option or on Production
+# In production you should turn it 'false'
+yarn typeorm migration:generate -- -n InitialMigrationsName
+
+yarn typeorm migration:run
+
+# Otherwise its auto synch with your db
+
+# Development
 yarn watch
 
 yarn dev
 
-#Production
+# Production
 yarn build
 
 yarn serve
@@ -30,3 +41,6 @@ MarrieMitsu | Isnainromadhoni
 ## License
 
 [MIT](https://choosealicense.com/licenses/mit/)
+
+## Project status
+#### On progress
