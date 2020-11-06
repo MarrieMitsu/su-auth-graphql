@@ -12,6 +12,8 @@ Trying to apply my knowledge of Authentication and GraphQL in this simple applic
 # Install dependencies
 yarn
 
+# Setup .env
+
 # Database migration
 # Setup typeorm config file 'ormconfig.[format]' 
 
