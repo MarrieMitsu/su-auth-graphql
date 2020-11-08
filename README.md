@@ -4,7 +4,7 @@ Server for user authentication
 
 ## Description
 
-Trying to apply my knowledge of Authentication and GraphQL in this simple application
+Trying to apply my knowledge of Authentication and GraphQL in this simple application, I know its kinda Boilerplate
 
 ## Usage
 
@@ -34,6 +34,19 @@ yarn dev
 yarn build
 
 yarn serve
+```
+
+## Graphql Endpoints
+
+```bash
+http://localhost:4000/graphql
+```
+
+## API Endpoints
+
+```bash
+POST: /api/auth/refresh_token
+- header: { authorization: token }
 ```
 
 ## Authors

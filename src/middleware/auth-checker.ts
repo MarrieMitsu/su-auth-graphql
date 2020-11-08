@@ -10,8 +10,9 @@ export const authChecker: AuthChecker<MContext> = (
 
     if (authorization) {
         const token = authorization.split(" ")[1];
-        if (verifyToken(token) && val.length === 0) {
-            context.payload = verifyToken(token);
+        const verify = verifyToken(token, "access");
+        if (verify && val.length === 0) {
+            context.payload = verify;
             return true;
         } else {
             return false;

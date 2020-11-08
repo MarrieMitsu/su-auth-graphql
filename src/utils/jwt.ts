@@ -1,6 +1,9 @@
-import { Response } from "express"
-import { sign, verify } from "jsonwebtoken"
-import { User } from "../entities/User"
+import { Response } from "express";
+import { sign, verify } from "jsonwebtoken";
+import { User } from "../entities/User";
+
+// Type
+type verifyType = "access" | "refresh";
 
 // Create access token
 export const createAccessToken = (user: User): string => {
@@ -28,6 +31,11 @@ export const sendRefreshToken = (res: Response, token: string): void => {
 }
 
 // Verify token
-export const verifyToken = (token: string) => {
-    return verify(token, process.env.ACCESS_TOKEN_KEY!) as any;
+export const verifyToken = (token: string, type: verifyType): any => {
+    return verify(
+        token, 
+        type === "access" 
+            ? process.env.ACCESS_TOKEN_KEY! 
+            : process.env.REFRESH_TOKEN_KEY!
+    ) as any;
 }

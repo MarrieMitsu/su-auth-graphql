@@ -1,12 +1,14 @@
 import "reflect-metadata";
 import "dotenv-safe/config";
 import { ApolloServer } from "apollo-server-express";
+import cookieParser from "cookie-parser";
 import express from "express";
 import { buildSchema } from "type-graphql";
 import { createConnection } from "typeorm";
-import { UserResolver } from "./schema/resolvers/user";
 import { authChecker } from "./middleware/auth-checker";
+import { router } from "./routes";
 import { AuthResolver } from "./schema/resolvers/auth";
+import { UserResolver } from "./schema/resolvers/user";
 
 // main
 (async() => {
@@ -15,6 +17,7 @@ import { AuthResolver } from "./schema/resolvers/auth";
 
     // App
     const app = express();
+    app.use(cookieParser());
 
     // Apollo server
     const apolloServer = new ApolloServer({
@@ -31,8 +34,9 @@ import { AuthResolver } from "./schema/resolvers/auth";
         cors: false,
     });
 
-    // Test get request
+    // Routes
     app.get("/", (_, res) => res.send("auth-graphql"));
+    app.use("/api", router);
 
     // Listen
     app.listen(process.env.PORT, () => {
