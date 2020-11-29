@@ -9,6 +9,6 @@ export const AuthRouter = Router();
 AuthRouter.use(validateCookies);
 
 /* 
-    @POST refresh_token
+    @GET refresh_token
 */
-AuthRouter.post("/refresh_token", new AuthService().refreshToken);
+AuthRouter.get("/refresh_token", new AuthService().refreshToken);

@@ -45,7 +45,7 @@ http://localhost:4000/graphql
 ## API Endpoints
 
 ```bash
-POST: /api/auth/refresh_token
+GET: /api/auth/refresh_token
 - header: { authorization: token }
 ```
 
