@@ -1,8 +1,10 @@
 import { Arg, Authorized, Ctx, Int, Mutation, Query, Resolver } from "type-graphql";
 import { getConnection } from "typeorm";
 import { User } from "../../entities/User";
-import { hashCredential } from "../../utils/credentials";
+import { hashCredential, verifyCredential } from "../../utils/credentials";
 import { MContext } from "../../utils/types";
+import { DeleteUserInput } from "../types/deleteUserInput";
+import { DeleteUserResponse } from "../types/deleteUserResponse";
 
 @Resolver()
 export class UserResolver {
@@ -31,14 +33,14 @@ export class UserResolver {
     @Mutation(() => User, { nullable: true })
     @Authorized()
     async updateUser(
-        @Arg("id", () => Int) id: number,
+        @Ctx() { payload }: MContext,
         @Arg("name") name: string
     ): Promise<User | null> {
         const user = await getConnection()
             .createQueryBuilder()
             .update(User)
             .set({ name })
-            .where("id = :id", { id })
+            .where("id = :id", { id: payload?.id })
             .returning("*")
             .execute();
 
@@ -64,13 +66,72 @@ export class UserResolver {
     }
 
     // Delete user
-    @Mutation(() => Boolean, { nullable: true })
+    @Mutation(() => DeleteUserResponse, { nullable: true })
     @Authorized()
     async deleteUser(
-        @Arg("id",() => Int) id: number
-    ): Promise<boolean> {
-        await User.delete(id);
-        return true;
+        @Ctx() { payload }: MContext,
+        @Arg("input") input: DeleteUserInput
+    ): Promise<DeleteUserResponse> {
+        const user = await User.findOne({
+            where: [
+                { username: input.unique },
+                { email: input.unique }
+            ]
+        });
+
+        if (!user) {
+            return {
+                errors: [
+                    {
+                        field: "usernameOrEmail",
+                        message: "Username or Email doesn't exist"
+                    }
+                ],
+                delete: false,
+            }
+        }
+
+        if (user.id !== payload?.id) {
+            return {
+                errors: [
+                    {
+                        field: "usernameOrEmail",
+                        message: "user not match with current user"
+                    }
+                ],
+                delete: false,
+            }
+        }
+
+        if (input.verify !== "delete-account") {
+            return {
+                errors: [
+                    {
+                        field: "verify",
+                        message: "Input not match"
+                    }
+                ],
+                delete: false,
+            }
+        }
+
+        const valid = await verifyCredential(user.password, input.password);
+        if (!valid) {
+            return {
+                errors: [
+                    {
+                        field: "confirmPassword",
+                        message: "Wrong password"
+                    }
+                ],
+                delete: false,
+            }
+        }
+
+        await User.delete(payload?.id!);
+        return {
+            delete: true,
+        };
     }
 
 }
