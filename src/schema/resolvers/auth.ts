@@ -18,19 +18,31 @@ export class AuthResolver {
         @Ctx() { res }: MContext
     ): Promise<UserResponse> {
 
-        const inputCheck = await User.findOne({
-            where: [
-                { username: input.username },
-                { email: input.email }
-            ]
+        const usernameCheck = await User.findOne({
+            where: {username: input.username}
         });
 
-        if (inputCheck) {
+        if (usernameCheck) {
             return {
                 errors: [
                     {
-                        field: "uniqueField",
-                        message: "Username or Email already taken"
+                        field: "username",
+                        message: "Username already taken"
+                    }
+                ]
+            }
+        }
+
+        const emailCheck = await User.findOne({
+            where: { email: input.email }
+        });
+
+        if (emailCheck) {
+            return {
+                errors: [
+                    {
+                        field: "email",
+                        message: "Email already taken"
                     }
                 ]
             }
@@ -74,7 +86,7 @@ export class AuthResolver {
             return {
                 errors: [
                     {
-                        field: "uniqueField",
+                        field: "usernameOrEmail",
                         message: "Username or Email doesn't exist"
                     }
                 ]

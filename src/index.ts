@@ -9,6 +9,7 @@ import { authChecker } from "./middleware/auth-checker";
 import { router } from "./routes";
 import { AuthResolver } from "./schema/resolvers/auth";
 import { UserResolver } from "./schema/resolvers/user";
+import cors from "cors";
 
 // main
 (async() => {
@@ -17,6 +18,12 @@ import { UserResolver } from "./schema/resolvers/user";
 
     // App
     const app = express();
+    app.use(
+        cors({
+            origin: process.env.CORS_ORIGIN,
+            credentials: true
+        })
+    );
     app.use(cookieParser());
 
     // Apollo server
