@@ -7,6 +7,12 @@ export class UserResponse {
 
     @Field(() => [FieldError], { nullable: true })
     errors?: FieldError[];
+
+    @Field({ nullable: true })
+    delete?: boolean;
+
+    @Field({ nullable: true })
+    update?: boolean;
     
     @Field(() => User, { nullable: true })
     user?: User;

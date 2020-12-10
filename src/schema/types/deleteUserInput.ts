@@ -1,4 +1,4 @@
-import { IsNotEmpty, Equals } from "class-validator";
+import { IsNotEmpty } from "class-validator";
 import { Field, InputType } from "type-graphql";
 
 @InputType()
