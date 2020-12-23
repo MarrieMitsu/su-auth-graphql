@@ -13,11 +13,17 @@ export class UserResponse {
 
     @Field({ nullable: true })
     update?: boolean;
+
+    @Field({ nullable: true })
+    status?: boolean;
     
     @Field(() => User, { nullable: true })
     user?: User;
 
     @Field({ nullable: true })
     accessToken?: string;
+
+    @Field({ nullable: true })
+    forgotPasswordToken?: string;
 
 }

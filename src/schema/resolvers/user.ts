@@ -1,3 +1,4 @@
+import { sendRefreshToken } from "../../utils/jwt";
 import { Arg, Authorized, Ctx, Mutation, Query, Resolver } from "type-graphql";
 import { getConnection } from "typeorm";
 import { User } from "../../entities/User";
@@ -107,7 +108,7 @@ export class UserResolver {
     @Mutation(() => UserResponse, { nullable: true })
     @Authorized()
     async deleteUser(
-        @Ctx() { payload }: MContext,
+        @Ctx() { payload, res }: MContext,
         @Arg("input") input: DeleteUserInput
     ): Promise<UserResponse> {
         const user = await User.findOne({
@@ -172,6 +173,8 @@ export class UserResolver {
                 delete: false
             }
         }
+
+        sendRefreshToken(res, "");
 
         return {
             delete: true,

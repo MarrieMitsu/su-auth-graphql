@@ -2,7 +2,7 @@ import { Arg, Ctx, Mutation, Resolver } from "type-graphql";
 import { getConnection } from "typeorm";
 import { User } from "../../entities/User";
 import { hashCredential, verifyCredential } from "../../utils/credentials";
-import { createAccessToken, createRefreshToken, sendRefreshToken } from "../../utils/jwt";
+import { createAccessToken, createForgotPasswordToken, createRefreshToken, sendRefreshToken } from "../../utils/jwt";
 import { MContext } from "../../utils/types";
 import { LoginInput } from "../types/loginInput";
 import { RegisterInput } from "../types/registerInput";
@@ -120,6 +120,32 @@ export class AuthResolver {
     ): boolean {
         sendRefreshToken(res, "");
         return true;
+    }
+
+    // Forgot password
+    @Mutation(() => UserResponse)
+    async forgotPassword(
+        @Arg("email") email: string
+    ): Promise<UserResponse> {
+        const user = await User.findOne({ where: { email } });
+        if (!user) {
+            return {
+                errors: [
+                    {
+                        field: "email",
+                        message: "Email not found"
+                    }
+                ],
+                status: false,
+            }
+        }
+
+        const token = createForgotPasswordToken(user);
+
+        return {
+            status: true,
+            forgotPasswordToken: token,
+        }
     }
 
 }
