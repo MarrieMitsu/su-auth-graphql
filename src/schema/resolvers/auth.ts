@@ -3,6 +3,7 @@ import { getConnection } from "typeorm";
 import { User } from "../../entities/User";
 import { hashCredential, verifyCredential } from "../../utils/credentials";
 import { createAccessToken, createForgotPasswordToken, createRefreshToken, sendRefreshToken } from "../../utils/jwt";
+import { sendEmail } from "../../utils/sendEmail";
 import { MContext } from "../../utils/types";
 import { LoginInput } from "../types/loginInput";
 import { RegisterInput } from "../types/registerInput";
@@ -142,9 +143,24 @@ export class AuthResolver {
 
         const token = createForgotPasswordToken(user);
 
+        sendEmail({
+            to: email,
+            subject: "Reset your GA password",
+            html: `<a href="${process.env.CORS_ORIGIN}/reset-password?signature=${token}">Reset password</a>`
+        });
+
         return {
             status: true,
-            forgotPasswordToken: token,
+        }
+    }
+
+    // Reset password
+    @Mutation(() => UserResponse)
+    async resetPassword(
+        @Arg("newPassword") _newPassword: string
+    ): Promise<UserResponse> {
+        return {
+            update: true
         }
     }
 
