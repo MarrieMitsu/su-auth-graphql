@@ -2,7 +2,7 @@ import { Arg, Ctx, Mutation, Resolver } from "type-graphql";
 import { getConnection } from "typeorm";
 import { User } from "../../entities/User";
 import { hashCredential, verifyCredential } from "../../utils/credentials";
-import { createAccessToken, createForgotPasswordToken, createRefreshToken, sendRefreshToken } from "../../utils/jwt";
+import { createAccessToken, createForgotPasswordToken, createRefreshToken, sendRefreshToken, verifyToken } from "../../utils/jwt";
 import { sendEmail } from "../../utils/sendEmail";
 import { MContext } from "../../utils/types";
 import { LoginInput } from "../types/loginInput";
@@ -157,10 +157,36 @@ export class AuthResolver {
     // Reset password
     @Mutation(() => UserResponse)
     async resetPassword(
-        @Arg("newPassword") _newPassword: string
+        @Arg("newPassword") newPassword: string,
+        @Arg("signature") signature: string
     ): Promise<UserResponse> {
-        return {
-            update: true
+        try {
+            const verify = verifyToken(signature, "forgot-password");
+            console.log(verify);
+
+            const user = await getConnection()
+                .createQueryBuilder()
+                .update(User)
+                .set({
+                    password: await hashCredential(newPassword)
+                })
+                .where("id = :id", { id: verify.id })
+                .returning("*")
+                .execute();
+
+            if (!user) {
+                return {
+                    update: false
+                }
+            }
+
+            return {
+                update: true
+            }
+        } catch (err) {
+            return {
+                update: false
+            }
         }
     }
 

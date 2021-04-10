@@ -11,18 +11,18 @@ interface SendEmailProps {
 // sendEmail
 export const sendEmail = async ({ to, subject, html }: SendEmailProps) => {
 
-    // Create dummy account
+    // Create ethereal mail dummy account
     // let testAccount = await nodemailer.createTestAccount();
     // let user = "eumxurudk2sx632c@ethereal.email";
     // let pass = "QczEU5gcNwJ7GvhBQ1";
     let mailConfig: SMTPTransport.Options = {
-        host: "smtp.gmail.com",
-        port: 465,
-        secure: true,
-        auth: {
-            user: process.env.NODEMAILER_EMAIL,
-            pass: process.env.NODEMAILER_PASSWORD
-        }
+        host: "localhost",
+        port: 1025,
+        secure: false,
+        // auth: {
+        //     user: process.env.NODEMAILER_EMAIL,
+        //     pass: process.env.NODEMAILER_PASSWORD
+        // }
     }
 
     // Transporter

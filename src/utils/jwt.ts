@@ -10,7 +10,7 @@ export const createForgotPasswordToken = (user: User): string => {
     return sign(
         { id: user.id },
         process.env.FORGOT_PASSWORD_TOKEN_KEY!,
-        { expiresIn: "3d" }
+        { expiresIn: "15m" }
     );
 }
 
