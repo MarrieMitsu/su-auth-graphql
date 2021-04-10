@@ -15,6 +15,8 @@ export const sendEmail = async ({ to, subject, html }: SendEmailProps) => {
     // let testAccount = await nodemailer.createTestAccount();
     // let user = "eumxurudk2sx632c@ethereal.email";
     // let pass = "QczEU5gcNwJ7GvhBQ1";
+
+    // Default using mailhog
     let mailConfig: SMTPTransport.Options = {
         host: "localhost",
         port: 1025,

@@ -6,11 +6,23 @@ Server for user authentication
 
 Trying to apply my knowledge of Authentication and GraphQL in this simple application, I know its kinda Boilerplate
 
+### Feature
+
+* Login &check;
+* Register &check;
+* Forgot Password &check;
+* Reset Password &check;
+* Change Password &check;
+* Update Profile &check;
+* Upload Profile Picture &cross;
+* Delete Account &check;
+
 ## Usage
 
+### Manual setup
 ```bash
 # Install dependencies
-yarn
+pnpm
 
 # Setup .env
 
@@ -19,22 +31,26 @@ yarn
 
 # Without synchronize option or on Production
 # In production you should turn it 'false'
-yarn typeorm migration:generate -- -n InitialMigrationsName
+pnpm typeorm migration:generate -- -n InitialMigrationsName
 
-yarn typeorm migration:run
+pnpm typeorm migration:run
 
 # Otherwise its auto synch with your db
 
 # Development
-yarn watch
+pnpm watch
 
-yarn dev
+pnpm dev
 
 # Production
-yarn build
+pnpm build
 
-yarn serve
+pnpm serve
 ```
+
+For the default SMTP service I use [Mailhog](https://github.com/mailhog/MailHog)
+
+### Using Docker
 
 ## Graphql Endpoints
 
