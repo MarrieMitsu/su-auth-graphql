@@ -22,6 +22,7 @@ Trying to apply my knowledge of Authentication and GraphQL in this simple applic
 ### Manual setup
 ```bash
 # Install dependencies
+# using your own package manager
 pnpm
 
 # Setup .env
@@ -29,13 +30,13 @@ pnpm
 # Database migration
 # Setup typeorm config file 'ormconfig.[format]' 
 
-# Without synchronize option or on Production
-# In production you should turn it 'false'
-pnpm typeorm migration:generate -- -n InitialMigrationsName
+# Without synchronize option or in Production
+# For production you should turn it 'false'
+pnpm typeorm migration:generate -n InitialMigrationsName
 
 pnpm typeorm migration:run
 
-# Otherwise its auto synch with your db
+# Otherwise or for Dev its auto synch with your db
 
 # Development
 pnpm watch
@@ -48,9 +49,19 @@ pnpm build
 pnpm serve
 ```
 
+Database migration reference [TypeORM](https://typeorm.io/#/migrations)
+
 For the default SMTP service I use [Mailhog](https://github.com/mailhog/MailHog)
 
-### Using Docker
+### Using docker-compose
+
+Before build and run the app you can configure `Dockerfile` and `docker-compose.yml`. Also you should matching the app service host with `docker-compose.yml` service name
+
+Then run
+
+```bash
+docker-compose up
+```
 
 ## Graphql Endpoints
 
@@ -74,4 +85,4 @@ MarrieMitsu | Isnainromadhoni
 [MIT](https://choosealicense.com/licenses/mit/)
 
 ## Project status
-#### On progress
+#### Active | On progress

@@ -1,0 +1,33 @@
+version: "3.9"
+services: 
+  web: 
+    build: .
+    image: su-auth-graphql
+    ports:
+      - "4000:4000"
+    depends_on: 
+      - db
+      - mailhog
+
+  db:
+    image: "postgres"
+    restart: "always"
+    environment: 
+      POSTGRES_DB: auth-graphql
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: example
+    ports: 
+        - "5432:5432"
+  
+  adminer:
+    image: "adminer"
+    restart: "always"
+    ports: 
+      - "8080:8080"
+
+  mailhog:
+    image: "mailhog/mailhog"
+    ports: 
+      - "8025:8025"
+      - "1025:1025"
+  

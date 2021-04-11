@@ -1,10 +1,10 @@
 {
     "type": "postgres",
-    "host": "localhost",
+    "host": "db",
     "port": 5432,
     "username": "postgres",
-    "password": "postgres",
-    "database": "database-name",
+    "password": "example",
+    "database": "auth-graphql",
     "logging": true,
     "synchronize": false,
     "entities": [

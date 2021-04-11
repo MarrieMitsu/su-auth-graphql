@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { validateCookies } from "../middleware/validate-cookies";
-import { AuthService } from "../services/Auth";
+import { AuthService } from "../services/auth";
 
 // Auth Router
 export const AuthRouter = Router();
