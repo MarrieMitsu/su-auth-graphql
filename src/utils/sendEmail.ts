@@ -13,8 +13,7 @@ export const sendEmail = async ({ to, subject, html }: SendEmailProps) => {
 
     // Create ethereal mail dummy account
     // let testAccount = await nodemailer.createTestAccount();
-    // let user = "eumxurudk2sx632c@ethereal.email";
-    // let pass = "QczEU5gcNwJ7GvhBQ1";
+    // console.log(testAccount);
 
     // Default using mailhog
     let mailConfig: SMTPTransport.Options = {
